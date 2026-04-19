@@ -11,11 +11,8 @@ Proper hand hygiene is critical! The goal of our group project is to use AI and 
    * **Medium:** 15% to 29.9% gel coverage
    * **High:** Over 30% gel coverage
 
-## 🚀 How to Run Our Code
+## 🚀 How to Run The Code
 If you want to run this project on your own computer, make sure you download our required tools first! Open your terminal and run:
 `pip install -r requirements.txt`
 
-## 👥 Project Creators
-* Zaineb 
-* Eric
-* Aishah
+
