@@ -1,18 +1,111 @@
-# Hand Hygiene Gel Classifier 
+# Hand Hygiene Classifier — YOLOv26 Segmentation (Gel Remaining)
 
-Proper hand hygiene is critical! The goal of our group project is to use AI and computer vision to automatically look at images of hands and calculate exactly how much sanitizing gel is on them. 
+This project uses **YOLOv26 segmentation** to detect **hand** and **gel** using polygon labels, then estimates **how much gel is left** on the hand.
 
-## How it's built
-1. **Labeling Data:** Manually traced the hands and the gel in our images using a tool called Label Studio.
-2. **Training the Brain:** Used an AI model called YOLO (Instance Segmentation) and trained it in Google Colab to recognize the difference between "hand pixels" and "gel pixels".
-3. **Grading the Hygiene:** The code compares the amount of gel to the size of the hand. It then gives the hand a hygiene grade:
-   * **None:** Less than 5% gel coverage
-   * **Low:** 5% to 14.9% gel coverage
-   * **Medium:** 15% to 29.9% gel coverage
-   * **High:** Over 30% gel coverage
+We compute:
 
-## How to Run The Code
-If you want to run this project on your own computer, make sure you download our required tools first! Open your terminal and run:
-`pip install -r requirements.txt`
+**gel% = (gel mask area ÷ hand mask area) × 100**
+
+Classes used:
+- `0 = gel`
+- `1 = hand`
+
+---
+
+## What We Built
+
+- A YOLOv26 **segmentation** model trained on polygon annotations (Label Studio export).
+- A pipeline that:
+  1) trains YOLOv26-seg
+  2) evaluates on a labeled validation set
+  3) predicts masks on images
+  4) calculates gel% per image
+  5) saves results to CSV
+  6) creates simple plots for reporting
+
+---
+
+## Why Segmentation (not Classification)
+
+Classification would give **one label per image** (e.g., “low gel”), but we need a **percentage**.  
+Segmentation gives pixel masks for gel and hand, so gel% can be calculated from mask area.
+
+---
+
+## Dataset & Labeling
+
+### Labeling Tool
+- **Label Studio**
+- Annotation type: **polygons** (segmentation)
+
+### Export Format
+- YOLO segmentation labels (`.txt` files)
+- Each line contains: `class_id x1 y1 x2 y2 ...` (normalized polygon points)
+
+### YOLO Folder Structure
+
+This is the structure YOLO expects:
+
+dataset_split/
+images/
+train/
+val/
+labels/
+train/
+val/
+data.yaml
+
+**Important rule:** label files must match image filenames (same stem).
+
+Example:
+- `images/train/img_001.jpg`
+- `labels/train/img_001.txt`
+
+### `data.yaml` Example
+```yaml
+path: /content/drive/MyDrive/hand_hygeine_project/dataset_split
+train: images/train
+val: images/val
+names:
+  0: gel
+  1: hand
+
+## Outputs you should expect
+
+Saved (usually to Google Drive):
+- `best_split_fast.pt` (trained model weights)
+- CSV files containing gel% per image:
+  - gel% values
+  - optional `gel_level` category (none/low/medium/high)
+  - optional `status` flag (`ok` / `no_hand_detected`)
+- Prediction overlay images (masks drawn on the input)
+
+---
+
+## Key challenges we faced
+
+- Colab GPU limits (sometimes forced CPU training, which is slow)
+- Colab resets deleting `/content/runs/...` (fixed by saving weights to Drive)
+- Validation labels missing at first (fixed by resplitting labeled pairs into `dataset_split/`)
+- Duplicate hand detections (fixed by using the **largest hand mask** when calculating gel%)
+- Small dataset size (gel detection is harder; more labeled images improves results)
+
+---
+
+## Limitations
+
+- Small dataset → results can be unstable and miss gel in some images.
+- Best improvement is adding more labeled data and training longer (ideally with GPU).
+
+---
+
+## Next steps
+
+- Label more images (recommended)
+- Create a proper test set (train/val/test all labeled)
+- Improve model accuracy and reduce duplicate hand detections
+
+---
+
 
 
