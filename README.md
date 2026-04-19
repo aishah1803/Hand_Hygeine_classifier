@@ -1,61 +1,31 @@
- Hand Hygiene Checker Website
-   Overview
+# Hand Hygiene Gel Classifier 
 
-This project is a web-based prototype that simulates an AI system for evaluating hand hygiene using UV images. It estimates how clean hands are after washing by detecting remaining gel residue and displaying a percentage.
+Proper hand hygiene is critical! The goal of our group project is to use AI and computer vision to automatically look at images of hands and calculate exactly how much sanitizing gel is on them. 
 
- Note: This website was not used in the final system due to integration issues, but it demonstrates the intended user interaction.
+# Hand Hygiene Web App Prototype 
 
- Features
-Upload hand image (UV light)
-Analyze button with loading animation
-Cleanliness percentage (0–100%)
-Status: Clean / Moderate / Not Clean
-Dynamic recommendations
-Dark mode toggle
-Example gallery
- System Flow
-Frontend → Flask Backend → (Simulated AI) → Results Display
- Technologies
-HTML, CSS, JavaScript
-Python (Flask)
- How It Works
-Upload image
-Click Analyze
-Image sent to /analyze
-Backend returns a simulated percentage
-UI updates with results
- Backend
-Endpoint: /analyze (POST)
-Input: image
-Output:
-{ "cleanliness": 75 }
+This folder contains the web interface and backend server for our Hand Hygiene AI project. 
+Users can upload an image of their hands under UV light to receive a cleanliness score and recommendations.
 
-Currently uses a random value (0–100), designed to be replaced with a real model.
+ **IMPORTANT NOTE: THE RESULTS ARE CURRENTLY FAKE** 
+> The actual YOLOv26 AI model is **not** connected to this website yet. Right now, when you click "Analyze", the backend uses a Python script to generate a random, fake percentage just to test the UI. We did this to make sure the loading animations, dark mode, and result screens work perfectly before we plug in the heavy AI model. 
 
- Run Locally
-pip install flask
-python app.py
+##  Built With
+* **Frontend:** HTML, CSS, JavaScript 
+* **Backend:** Python, Flask
+* **AI Model:** *(Pending - currently returning mocked random numbers)*
 
-Open:
+##  How to Run the Website
+To run this website on your own computer, follow these steps:
 
-http://127.0.0.1:5000
- Structure
-index.html
-style.css
-script.js
-app.py
-README.md
- Limitations
-No real AI model yet
-Requires local server
-Not deployed
- Future Work
-Integrate AI model
-Deploy online
-Improve accuracy and UI
- Contribution
-Frontend & Integration: Website design, UI, API connection
-Model: Handled separately by teammate
- Summary
+1. Open your terminal and navigate to this `web_app` folder.
+2. Install Flask by running: 
+   `pip install Flask`
+3. Start the server by running: 
+   `python app.py`
+4. Open your web browser and go to: `http://127.0.0.1:5000`
 
-A functional prototype demonstrating the full pipeline from image upload to result display, ready for AI integration.
+## Features
+* **Image Upload:** Send UV hand images to the backend via a FormData POST request.
+* **Dynamic UI:** Displays cleanliness percentage, status (Clean / Moderate / Not Clean), and smart recommendations.
+* **Extras:** Dark mode toggle, loading animations, and an example gallery.
