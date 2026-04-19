@@ -57,9 +57,6 @@ data.yaml
 
 **Important rule:** label files must match image filenames (same stem).
 
-Example:
-- `images/train/img_001.jpg`
-- `labels/train/img_001.txt`
 
 ### `data.yaml` Example
 ```yaml
